@@ -161,6 +161,11 @@ class Zombie:
         return BehaviorTree.SUCCESS
         pass
 
+    def count_ball(self):
+        if self.ball_count >=common.boy.ball_count:
+            return BehaviorTree.SUCCESS
+        else:
+            return BehaviorTree.FAIL
 
     def build_behavior_tree(self):
         # 여기를 채우시오.
