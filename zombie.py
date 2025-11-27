@@ -183,17 +183,15 @@ class Zombie:
 
         a3=Action('랜덤 위치 설정',self.set_random_location)
         root=wander=Sequence('Wander',a3,a2)
-
-        #c1과 a4를 묶어서 시퀀스노드라 한다 둘 다 만족해야 다음으로 간다
+        c2=Condition('소년보다 공 개수 이상인가',self.count_ball)
+        a4 = Action('소년 추적', self.move_to_boy)
+        chase=Sequence('공 많으면 추적',c2,a4)
+        a6=Action('도망',self.run_from_boy)
+        chase_or_run=Selector('추적 또는 도망',chase,a6)
         c1=Condition('소년이 근처에 있는가',self.if_boy_nearby,7)
-        a4=Action('소년 추적',self.move_to_boy)
-        chase_boy_if_nearby=Sequence('소년이 근처에 있으면 추적',c1,a4)
+        interact=Sequence('소년감지후대응',c1,chase_or_run)
+        root = Selector('전체 행동(루트)', interact, wander)
 
-
-        chase_or_wander=Selector('추적 아니면 배회',chase_boy_if_nearby,wander)
-
-        a5=Action('다음순찰위치획득',self.get_patrol_location)
-        root=patrol=Sequence('순찰',a5,a2)
         self.bt=BehaviorTree(root) #매 프레임마다 실행해야함
         pass
 
