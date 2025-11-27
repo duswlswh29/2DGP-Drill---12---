@@ -159,13 +159,21 @@ class Zombie:
         self.tx,self.ty=self.patrol_points[self.loc_no]
         self.loc_no=(self.loc_no+1)%len(self.patrol_points) #순환시키면서넘버를증가시킴
         return BehaviorTree.SUCCESS
-        pass
 
-    def count_ball(self):
+
+    def count_ball(self): #공개수비교
         if self.ball_count >=common.boy.ball_count:
             return BehaviorTree.SUCCESS
         else:
             return BehaviorTree.FAIL
+
+    def run_from_boy(self): #도망가자
+        self.state='Walk'
+        tx=self.x+(self.x-common.boy.x)
+        ty=self.y+(self.y-common.boy.y)
+        self.move_little_to(tx, ty)
+
+        return BehaviorTree.RUNNING
 
     def build_behavior_tree(self):
         # 여기를 채우시오.
